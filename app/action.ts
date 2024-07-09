@@ -2,7 +2,7 @@
 import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server';
 import {z} from 'zod'
 import prisma from './lib/db';
-import { Categortypes } from '@prisma/client';
+import type { Categortypes } from '@prisma/client';
 
 export type State ={
   status:'error' | 'success' | undefined
@@ -22,6 +22,11 @@ const productSchema = z.object({
   productFile:z.string().min(1 , {message:'Please upload a zip of your product'})
 })
 
+
+const userSettingsSchema = z.object({
+  firstName:z.string().min(3,{message:'Minimum length of 3 required'}).or(z.literal('')).optional(),
+  lastName:z.string().min(3,{message:'Minimum length of 3 required'}).or(z.literal('')).optional(),
+})
 
 export const SellProduct = async(prevState: any ,formData:FormData)=> {
   const {getUser} = getKindeServerSession()
@@ -72,5 +77,47 @@ message:'Ops , I think there is a mistake with your inputs'
   }
 
   return state
+
+}
+
+
+
+
+export const updateUserSettings = async (prevState: any,formData : FormData) =>{
+  const {getUser} = getKindeServerSession()
+  const user = await getUser()
+
+  if(!user){
+    throw new Error('User Not Found')
+  }
+
+  const validateFields = userSettingsSchema.safeParse({
+    firstName:formData.get('firstName'),
+    lastName:formData.get('lastName')
+  })
+  if(!validateFields.success){
+    const state:State ={
+      status:'error',
+      errors:validateFields.error.flatten().fieldErrors,
+      message:'Ops ,I think there is a mistake with your inputs'
+    }
+    return state
+  }
+const data = await prisma.user.update({
+  where:{
+    id:user.id
+  },
+  data:{
+    firstName:validateFields.data.firstName,
+    lastName:validateFields.data.lastName
+  }
+})
+
+const state:State = {
+  status:'success',
+  message:'Your Settings have been updated'
+}
+
+return state
 
 }

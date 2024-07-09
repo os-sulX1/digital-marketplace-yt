@@ -118,23 +118,27 @@ useEffect(()=>{
 						</div>
 
 						<div className="flex flex-col">
-              <input type="hidden" name="productFile" value={productFile ?? ''} />
-							<Label>Product File</Label>
-							<UploadDropzone endpoint="productFileUpload" onClientUploadComplete={(res) => {
-                setProductFile(res[0].url)
-								toast.success('Your Product file has been uploaded!')
-              }}
-              onUploadError={(error:Error)=> {
-								toast.error('Something went wrong , try agin')
-              }} />
-								{state?.errors?.productFile?.[0] && (
-								<p className="text-destructive">{state?.errors?.productFile?.[0]}</p>
-							)}
-						</div>
+      <input type="hidden" name="productFile" value={productFile as string} />
+      <Label>Product File</Label>
+      <UploadDropzone
+        endpoint="productFilUploader"
+        onClientUploadComplete={(res)=> {
+					setProductFile(res[0].url)
+					toast.success('Your Product file has been uploaded')
+				}}
+        onUploadError={(error: Error) => {
+          toast.error(`Something went wrong, try again. Error: ${error.message}`);
+        }}
+      />
+      {state.errors?.productFile?.[0] && (
+        <p className="text-destructive">{state.errors.productFile[0]}</p>
+      )}
+    </div>
+  
 					</CardContent>
 
 					<CardFooter className="mt-5">
-						<SubmitButton />
+						<SubmitButton title="Create your Product" />
 					</CardFooter>
 				</form>
 			</Card>
