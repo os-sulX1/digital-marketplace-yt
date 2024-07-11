@@ -1,6 +1,6 @@
 "use client";
 
-import { Editor, useEditor, EditorContent } from "@tiptap/react";
+import { type Editor, useEditor, EditorContent, type JSONContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { Button } from "./ui/button";
 const MenuBar = ({ editor }: { editor: Editor | null }) => {
@@ -55,7 +55,7 @@ const MenuBar = ({ editor }: { editor: Editor | null }) => {
 };
 
 export default MenuBar;
-export const TipTapEditor = ({json , setJson} : {json:any , setJson:any}) => {
+export const TipTapEditor = ({json , setJson} : {json:JSONContent | null , setJson:any}) => {
 	const editor = useEditor({
 		extensions: [StarterKit],
     content:json ,

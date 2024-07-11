@@ -91,23 +91,25 @@ useEffect(()=>{
 						</div>
 
 						<div className="flex flex-col gap-y-2">
-							<input
-								type="hidden"
-								name="description"
-								value={JSON.stringify(json)}
-							/>
-							<Label>Description</Label>
-							<TipTapEditor json={json} setJson={setJson} />
-							{state?.errors?.description?.[0] && (
-								<p className="text-destructive">{state?.errors?.description?.[0]}</p>
-							)}
-						</div>
+          <input
+            type="hidden"
+            name="description"
+            value={JSON.stringify(json)}
+          />
+          <Label>Description</Label>
+          <TipTapEditor json={json} setJson={setJson} />
+          {state?.errors?.description?.[0] && (
+            <p className="text-destructive">
+              {state?.errors?.description?.[0]}
+            </p>
+          )}
+        </div>
 
 						<div className="flex flex-col gap-y-2">
               <input type="hidden" name="images" value={JSON.stringify(images)} />
 							<Label>Product Image</Label>
 							<UploadDropzone endpoint="imageUploader"  onClientUploadComplete={(res)=>{
-                setImages(res.map(item => item.url))
+                setImages(res.map((item) => item.url))
 								toast.success('Your images have been uploaded!')
               }}  onUploadError={(error : Error)=>{
 								toast.error('Something went wrong , try agin')

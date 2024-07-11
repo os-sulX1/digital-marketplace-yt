@@ -2,7 +2,7 @@
 import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server';
 import {z} from 'zod'
 import prisma from './lib/db';
-import type { Categortypes } from '@prisma/client';
+import type { CategoryTypes } from '@prisma/client';
 
 export type State ={
   status:'error' | 'success' | undefined
@@ -17,7 +17,7 @@ const productSchema = z.object({
   category:z.string().min(1 , {message:'Category is required'}),
   price: z.number().min(1 , {message: 'The price has to be bigger than 1'}),
   smallDescription:z.string().min(10, {message:'Please summarize your product more'}),
-  description:z.string().min(10, {message:'Description is required'}),
+  description:z.string().min(2, {message:'Description is required'}),
   images:z.array(z.string(), {message: 'Image are required'}),
   productFile:z.string().min(1 , {message:'Please upload a zip of your product'})
 })
@@ -61,10 +61,10 @@ message:'Ops , I think there is a mistake with your inputs'
   await prisma.product.create({
    data:{
     name:validateFields.data.nameInput,
-    category: validateFields.data.category as Categortypes,
+    category: validateFields.data.category as CategoryTypes,
     smallDescription:validateFields.data.smallDescription,
     price:validateFields.data.price,
-    image:validateFields.data.images,
+    images:validateFields.data.images,
     productFile:validateFields.data.productFile,
     userId:user.id,
     description:JSON.parse(validateFields.data.description),
