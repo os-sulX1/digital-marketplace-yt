@@ -153,30 +153,37 @@ export const BuyProduct = async(formData:FormData) =>{
   })
 
   const session = await stripe.checkout.sessions.create({
-    mode:'payment',
-    line_items:[
+    mode: "payment",
+    line_items: [
       {
-        price_data:{
-          currency:'usd',
-          unit_amount:Math.round((data?.price as number) * 100),
-          product_data:{
-            name:data?.name as string,
-            description:data?.smallDescription,
-            images:data?.images
-          }
+        price_data: {
+          currency: "usd",
+          unit_amount: Math.round((data?.price as number) * 100),
+          product_data: {
+            name: data?.name as string,
+            description: data?.smallDescription,
+            images: data?.images,
+          },
         },
-        quantity:1
-      }
+        quantity: 1,
+      },
     ],
-    payment_intent_data:{
-      application_fee_amount:(Math.round((data?.price as number) * 100)) * 0.1,
-      transfer_data:{
-        destination: data?.User?.connectedAccountId,
-      }
+
+    payment_intent_data: {
+      application_fee_amount: Math.round((data?.price as number) * 100) * 0.1,
+      transfer_data: {
+        destination: data?.User?.connectedAccountId as string,
+      },
     },
-    success_url:'http://localhost:3000/payment/success', 
-    cancel_url:'http://localhost:3000/payment/cancel',
-  })
+    success_url:
+      process.env.NODE_ENV === "development"
+        ? "http://localhost:3000/payment/success"
+        : "https://marshal-ui-yt.vercel.app/payment/success",
+    cancel_url:
+      process.env.NODE_ENV === "development"
+        ? "http://localhost:3000/payment/cancel"
+        : "https://marshal-ui-yt.vercel.app/payment/cancel",
+  });
  return redirect(session.url as string)
 } 
 

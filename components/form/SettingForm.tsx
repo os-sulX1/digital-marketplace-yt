@@ -9,7 +9,7 @@ import {
 } from "../ui/card";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
-import SubmitButton from "../SubmitButton";
+import {SubmitButton} from "../SubmitButton";
 import { useFormState } from "react-dom";
 import { type State, updateUserSettings } from "@/app/action";
 import { toast } from "sonner";

@@ -13,11 +13,10 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import React, { useEffect, useState } from "react";
-import { Button } from "@/components/ui/button";
 import type { JSONContent } from "@tiptap/react";
 import { useFormState } from "react-dom";
 import { toast } from "sonner";
-import SubmitButton from "@/components/SubmitButton";
+import {SubmitButton} from "@/components/SubmitButton";
 import { SellProduct, type State } from "@/app/action";
 import { UploadDropzone } from "@/app/lib/uploadthing";
 
