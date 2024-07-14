@@ -133,24 +133,25 @@ return state
 
 
 
-export const BuyProduct = async(formData:FormData) =>{
-  const id = formData.get('id') as string
-  const data =  await prisma.product.findUnique({
-    where:{
-      id:id
+export async function BuyProduct(formData: FormData) {
+  const id = formData.get("id") as string;
+  const data = await prisma.product.findUnique({
+    where: {
+      id: id,
     },
-    select:{
-      name:true,
-      smallDescription:true,
-      price:true,
-      images:true,
-      User:{
-        select:{
-          connectedAccountId:true
-        }
-      }
-    }
-  })
+    select: {
+      name: true,
+      smallDescription: true,
+      price: true,
+      images: true,
+      productFile: true,
+      User: {
+        select: {
+          connectedAccountId: true,
+        },
+      },
+    },
+  });
 
   const session = await stripe.checkout.sessions.create({
     mode: "payment",
@@ -168,6 +169,9 @@ export const BuyProduct = async(formData:FormData) =>{
         quantity: 1,
       },
     ],
+    metadata: {
+      link: data?.productFile as string,
+    },
 
     payment_intent_data: {
       application_fee_amount: Math.round((data?.price as number) * 100) * 0.1,
@@ -184,9 +188,9 @@ export const BuyProduct = async(formData:FormData) =>{
         ? "http://localhost:3000/payment/cancel"
         : "https://marshal-ui-yt.vercel.app/payment/cancel",
   });
- return redirect(session.url as string)
-} 
 
+  return redirect(session.url as string);
+}
 
 
 
