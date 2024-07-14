@@ -11,6 +11,8 @@ import {
 import Image from "next/image";
 import React from "react";
 import type { JSONContent } from "@tiptap/react";
+import { BuyProduct } from "@/app/action";
+import { BuyButton } from "@/components/SubmitButton";
 
 const getData = async (id: string) => {
 	const data = await prisma.product.findUnique({
@@ -25,6 +27,7 @@ const getData = async (id: string) => {
 			images: true,
 			price: true,
 			createdAt: true,
+			id:true,
 			User: {
 				select: {
 					profileImage: true,
@@ -68,9 +71,10 @@ const ProductPage = async ({ params }: { params: { id: string } }) => {
 					{data?.smallDescription}
 				</p>
 
-				<Button className="w-full mt-10" size={"lg"}>
-					Buy for ${data?.price}
-				</Button>
+			<form action={BuyProduct} method="post">
+			<input type="hidden" name="id" value={data?.id} />
+			<BuyButton price={data?.price as number} />
+			</form>
 
 				<div className=" border-t-4 border-gray-200 my-10 pt-10" />
 
