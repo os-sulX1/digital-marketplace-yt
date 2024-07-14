@@ -13,6 +13,8 @@ import React from "react";
 import type { JSONContent } from "@tiptap/react";
 import { BuyProduct } from "@/app/action";
 import { BuyButton } from "@/components/SubmitButton";
+import {unstable_noStore as noStore} from 'next/cache'
+
 
 const getData = async (id: string) => {
 	const data = await prisma.product.findUnique({
@@ -40,6 +42,7 @@ const getData = async (id: string) => {
 };
 
 const ProductPage = async ({ params }: { params: { id: string } }) => {
+	noStore()
 	const data = await getData(params.id);
 	return (
 		<section className="max-w-7xl mx-auto px-4 lg:px-8 lg:grid lg:grid-rows-1 lg:grid-cols-7 lg:gap-x-8 lg:gap-y-10 xl:gap-x-16">

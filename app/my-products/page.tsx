@@ -2,6 +2,8 @@ import React from 'react'
 import prisma from '../lib/db'
 import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server'
 import { ProductCard } from '@/components/ProductCard'
+import {unstable_noStore as noStore} from 'next/cache'
+
 
 
 const getData= async(userId : string)=>{
@@ -22,6 +24,7 @@ const getData= async(userId : string)=>{
 
 
 const MyProductPage = async() => {
+  noStore()
   const {getUser} = getKindeServerSession()
   const user = await getUser()
 
