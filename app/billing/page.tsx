@@ -53,7 +53,7 @@ const BillingPage = async () => {
           }
 
           {
-            data.stripeConnectedLinked ===true && (
+            data.stripeConnectedLinked === true && (
               <form action={GetStripeDashboardLink}>
                 <SubmitButton  title='View dashboard'/>
               </form>

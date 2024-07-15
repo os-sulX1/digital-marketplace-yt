@@ -5,7 +5,7 @@ import { headers } from "next/headers";
 export const POST = async(req:Request)=>{
   const body = await  req.text()
 
-  const signature = headers().get('Strip-Signature') as string
+  const signature = headers().get('Stripe-Signature') as string
 
   let event;
 
@@ -30,7 +30,8 @@ export const POST = async(req:Request)=>{
           connectedAccountId:account.id,
         },
         data:{
-          stripeConnectedLinked:!(account.capabilities?.transfers === 'pending'|| account.capabilities?.transfers === 'inactive' ),
+          stripeConnectedLinked:
+          account.capabilities?.transfers === 'pending' || account.capabilities?.transfers === 'inactive'? false : true,
         }
       })
       break;

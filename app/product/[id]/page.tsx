@@ -1,6 +1,5 @@
 import prisma from "@/app/lib/db";
 import ProductDescription from "@/components/ProductDescription";
-import { Button } from "@/components/ui/button";
 import {
 	Carousel,
 	CarouselContent,

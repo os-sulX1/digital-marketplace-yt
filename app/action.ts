@@ -213,7 +213,7 @@ export const CreateStripeAccountLink = async ()=>{
     refresh_url:process.env.NODE_ENV === 'development'?
     'http://localhost:3000/billing' : 'https://digital-marketplace-yt.vercel.app/billing',
     return_url:process.env.NODE_ENV === 'development'?
-    `http://localhost:3000/return/${data?.connectedAccountId}`:`https://digital-marketplace-yt.vercel.app//return/${data?.connectedAccountId}`
+    `http://localhost:3000/return/${data?.connectedAccountId}`:`https://digital-marketplace-yt.vercel.app/return/${data?.connectedAccountId}`
     ,
     type:'account_onboarding'
   });
